@@ -53,12 +53,7 @@ router.get("/users/me", authentication, async (req, res) => {
   res.send(req.user);
 });
 
-// router.get("/users/:id", async (req, res) => {
-//   const _id = req.params.id;
-
 router.patch("/users/me", authentication, async (req, res) => {
-  // const { user } = req;
-
   const updates = Object.keys(req.body);
   const possibleUpdates = ["name", "password", "email", "age"];
   const isUpdateValid = updates.every(update =>
@@ -86,13 +81,5 @@ router.delete("/users/me", authentication, async (req, res) => {
     res.status(500).send(e);
   }
 });
-
-
-const moduleTest = (function(){
-  
-})()
-
-
-
 
 module.exports = router;
