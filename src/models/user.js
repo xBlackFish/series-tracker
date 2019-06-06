@@ -4,55 +4,61 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const Task = require("./task");
 
-const userSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: true,
-    trim: true
-  },
-  age: {
-    type: Number,
-    default: 0,
-    validate(value) {
-      if (value < 0) {
-        throw new Error("Age cannot be negative value");
+const userSchema = new mongoose.Schema(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true
+    },
+    age: {
+      type: Number,
+      default: 0,
+      validate(value) {
+        if (value < 0) {
+          throw new Error("Age cannot be negative value");
+        }
       }
-    }
-  },
-  email: {
-    type: String,
-    unique: true,
-    required: true,
-    trim: true,
-    lowercase: true,
-    validate(value) {
-      if (!validator.isEmail(value)) {
-        throw new Error("Given email is incorrect!");
+    },
+    email: {
+      type: String,
+      unique: true,
+      required: true,
+      trim: true,
+      lowercase: true,
+      validate(value) {
+        if (!validator.isEmail(value)) {
+          throw new Error("Given email is incorrect!");
+        }
       }
-    }
-  },
-  password: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 7,
-    validate(value) {
-      if (value.toLowerCase().includes("password")) {
-        throw new Error('Password cannot contain word "password"');
+    },
+    password: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 7,
+      validate(value) {
+        if (value.toLowerCase().includes("password")) {
+          throw new Error('Password cannot contain word "password"');
+        }
       }
-    }
-  },
-  tokens: [
-    {
-      token: {
-        type: String,
-        required: true
+    },
+    avatar: {
+      type: Buffer
+    },
+    tokens: [
+      {
+        token: {
+          type: String,
+          required: true
+        }
       }
-    }
-  ]
-}, {
-  timestamps: true
-});
+    ]
+  },
+  {
+    timestamps: true
+  }
+);
 
 userSchema.virtual("tasks", {
   ref: "Task",
@@ -83,6 +89,7 @@ userSchema.methods.toJSON = function() {
 
   delete userObj.password;
   delete userObj.tokens;
+  delete userObj.avatar;
 
   return userObj;
 };
