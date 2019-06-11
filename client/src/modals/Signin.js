@@ -69,7 +69,7 @@ const SignInModal = props => {
             <div className={classes.textFieldsGroup}>
               <TextField
                 id="email"
-                label="email"
+                label="Email"
                 className={classes.textField}
                 value={values.email}
                 onChange={handleChange("email")}
